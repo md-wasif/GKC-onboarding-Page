@@ -7,7 +7,7 @@
 
 
 <div class="row brand-card">
-    <div class="col-md-6">
+    <div class="col-md-4">
         <div class="brandcard-body">
             <div class="d-flex align-items-center justify-content-between">
                 <h4>Brands</h4>
@@ -16,12 +16,12 @@
             <div>
                 <perfect-scrollbar style="overflow-y: auto; height: 365px;">
                     <div class="my-3" *ngFor="let brands of allBrands">
-                        <div class="d-flex pe-3" >
+                        <div class="d-flex pe-3">
                             <div class="mt-1">
                                 <img src="assets/images/link-doc.png" alt="component on github"/>
                             </div>
                             <div class="ms-2 w-100">
-                                <div class="mb-2 d-md-flex justify-content-between align-items-center" >
+                                <div class="mb-2 d-md-flex justify-content-between align-items-center">
                                     <div>
                                         <div class="fw-bolder text-dark">{{brands.brand.name}}</div>
                                         <div class="text-muted fw-semibold">No of products: {{brands.products.length}}</div>
