@@ -1,10 +1,15 @@
-import { Component, OnInit, ChangeDetectorRef, ViewChild, HostListener } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild, HostListener, TemplateRef } from '@angular/core';
 import { ColumnMode, SelectionType } from '@swimlane/ngx-datatable';
 import { DatatableComponent } from '@swimlane/ngx-datatable';
 import { UserManagementService } from './user-management.service'
 import { ScreenSizeService } from '@app/shared/services/screen-size.service';
 import { delay } from 'rxjs/operators';
 import { SCREEN_SIZE } from '@app/shared/types/screen-size.enum';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal'
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { ApiService } from '@app/api.service';
+import { Router } from '@angular/router';
+
 
 @Component({
     selector: 'user-management',
@@ -15,7 +20,13 @@ import { SCREEN_SIZE } from '@app/shared/types/screen-size.enum';
     ],
 })
 export class UserManagementComponent implements OnInit {
-
+    formGroup = this.formBuilder.group({
+                firstname: [null, [Validators.required]],
+                lastname: [null, [Validators.required]],
+                email: [null, [Validators.required]],
+                password: [null, [Validators.required]]
+            });
+    
     temp = [];
     selected = [];
     users = []
@@ -23,9 +34,14 @@ export class UserManagementComponent implements OnInit {
     SelectionType = SelectionType;
     rowHeight: 'auto' | number = 'auto'
     scrollbarH: boolean = false
+    modalRef: BsModalRef;
+    public viewUserDetails:Array<any> = [];
+    value = true;
+    public allUsers:Array<any> = []
 
+    
     @ViewChild(DatatableComponent) table: DatatableComponent;
-    constructor(private tableSvc: UserManagementService, private cdr: ChangeDetectorRef, private screenSizeSvc: ScreenSizeService) {  
+    constructor(private userManagementService: UserManagementService, private cdr: ChangeDetectorRef, private screenSizeSvc: ScreenSizeService, private modalService: BsModalService, private formBuilder: FormBuilder, private api_service: ApiService, private router: Router) {  
         this.screenSizeSvc.onResize$.pipe(delay(0)).subscribe(sizes => {
             const sizeTabletAbove = sizes.includes(SCREEN_SIZE.XXL) ||  sizes.includes(SCREEN_SIZE.XL) || sizes.includes(SCREEN_SIZE.LG)
             if(sizeTabletAbove){
@@ -41,20 +57,114 @@ export class UserManagementComponent implements OnInit {
         });
     }
 
-    @HostListener('window:resize', ['$event'])windowResize(event) {
-        this.getScreenWidth(event.target.innerWidth)
+    ngOnInit() {
+        this.getUsers();
+         
     }
 
-    ngOnInit(): void {
-        this.fetch()
-    }
-
-    fetch() {
-        this.tableSvc.getUsers().subscribe(data => {
+    //get users data on load
+    getUsers() {
+        this.userManagementService.getUsers().subscribe(data => {
             this.users = data
             this.temp = [...data]
             this.cdr.markForCheck();
         });
+    }
+
+
+    //create user API
+    createUser(createusertemplate) {
+    let body = { 
+      firstName: this.formGroup.value.firstname,
+      lastName: this.formGroup.value.lastname,
+      email: this.formGroup.value.email,
+      password: this.formGroup.value.password
+    }
+    this.userManagementService.createUser(body).subscribe(res => {
+      if (res) {
+        this.modalService.hide(createusertemplate);
+        window.location.reload();
+        }
+      })
+    }
+
+
+    // view user API
+    viewUserModal(row, viewUserModal) {
+        this.userManagementService.viewUser(row._id).subscribe(res => {
+        this.viewUserDetails = res
+        })
+        this.openModal(viewUserModal)
+    }
+
+
+    // open update user modal
+    updateUserModal(row, updatetemplate) {
+        this.userManagementService.viewUser(row._id).subscribe(res => {
+            this.viewUserDetails = res
+            })
+        this.openModal(updatetemplate)
+    }
+
+
+    // open update user modal
+    updateUserDetails(user, updatetemplate) {
+        let body = { 
+            firstName: this.formGroup.value.firstname,
+            lastName: this.formGroup.value.lastname,
+            email: this.formGroup.value.email
+            // password: this.formGroup.value.password
+          }
+          this.userManagementService.updateUserDetails(body, user._id).subscribe(res => {
+              if(res) {
+                this.modalService.hide(updatetemplate);
+              }
+          })
+    }
+
+    // delete user
+    deleteUser(user) {
+        this.userManagementService.deleteUser(user).subscribe(res=>{
+          if(res) {
+            let array = this.allUsers.indexOf(user, 0)
+                  this.allUsers.splice(array, 1)
+            window.location.reload();
+          }
+        })
+      }
+
+
+      toggleUser(event:any,user:any){
+        if(user){
+            let body = {
+                isActive: event.checked
+              }
+            user.isActive = event.checked;
+            this.userManagementService.toggleUser(body, user).subscribe(res=>{
+              })
+        }
+    }
+
+    
+    // createUserForm(){
+    //     this.formGroup = this.formBuilder.group({
+    //         firstname: [null, [Validators.required]],
+    //         lastname: [null, [Validators.required]],
+    //         email: [null, [Validators.required]],
+    //         password: [null, [Validators.required]]
+    //     });
+    // }
+
+   
+
+    openModal(template: TemplateRef<any>) {
+        this.modalRef = this.modalService.show(template);
+            // this.createUserForm();
+        
+      }
+
+    @HostListener('window:resize', ['$event'])windowResize(event) {
+        this.getScreenWidth(event.target.innerWidth)
     }
 
     updateFilter(event) {
@@ -69,14 +179,20 @@ export class UserManagementComponent implements OnInit {
     onSelect({ selected }) {
         this.selected.splice(0, this.selected.length);
         this.selected.push(...selected);
-        console.log('Select Event', this.selected);
     }
     
     onActivate(event) {
-        console.log('Activate Event', event);
     }
 
     getScreenWidth(size:number) {
         this.screenSizeSvc.onResize(size)
     }
+
+
+  
+
+  
+
+
+  
 }

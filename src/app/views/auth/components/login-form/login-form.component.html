@@ -1,38 +1,40 @@
 <div class="alert alert-danger" *ngIf="showResult">
 
 </div>
-<form [formGroup]="formGroup" (validSubmit)="login()">
+<form [formGroup]="formGroup">
     <div class="form-group mb-3">
-        <label class="form-label">Username</label>
+        <label class="form-label">Email</label>
         <input 
             type="text" 
             class="form-control no-validation-icon no-success-validation" 
-            formControlName="username"
+            formControlName="email"
         >
     </div>
     <div class="mb-3 ">
         <label class="form-label d-flex justify-content-between">
             <span>Password</span>
-            <a class="text-primary font" href="">Forget Password?</a>
+            <!-- <a class="text-primary font" href="">Forget Password?</a> -->
         </label>
         <div class="form-group input-affix flex-column">
             <label class="d-none">Password</label>
             <input 
-                [type]="showPassword ? 'text' : 'password'" 
+                type="password"
                 class="form-control no-validation-icon no-success-validation" 
                 formControlName="password"
             >
-            <i 
+            <p class="medium fw-bold mt-4 pt-1 mb-0">Don't have an account? <a href="#!"
+                class="link-danger" [routerLink]="['/auth/register']">Register</a></p>
+            <!-- <i 
                 class="suffix-icon feather cursor-pointer text-dark" 
                 [ngClass]="showPassword ? 'icon-eye-off' : 'icon-eye'" 
                 (click)="onShowPasswordClick()"
             >
-            </i>
+            </i> -->
         </div>
     </div>
-    <button class="btn btn-primary w-100" type="submit">Log In</button>
+    <button class="btn btn-primary w-100" type="submit" (click)="login()">Log In</button>
 </form>
-<div *ngIf="thirPartyLogin">
+<!-- <div *ngIf="thirPartyLogin">
     <div class="divider">
         <span class="divider-text text-muted">or login with</span>
     </div>
@@ -53,4 +55,4 @@
             </button>
         </div>
     </div>
-</div>
+</div> -->

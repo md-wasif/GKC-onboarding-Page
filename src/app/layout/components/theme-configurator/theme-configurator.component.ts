@@ -25,7 +25,6 @@ export class ThemeConfiguratorComponent implements OnInit {
     }
 
     configChange() {
-        console.log('configChange', this.config);
         this.store.dispatch(new UpdateConfig(this.config));      
     }
 

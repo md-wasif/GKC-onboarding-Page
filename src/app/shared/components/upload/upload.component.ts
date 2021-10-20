@@ -114,7 +114,6 @@ import {
             file.percentage && this.lifecycle.progress(file, file.percentage)
             if (event instanceof HttpResponse) {
                 this.lifecycle.success(Object.assign(file, { status: 'success' }), event)
-                console.log('this.lifecycle', this.lifecycle)
             }
             this.updateFile(file)
         }, err => {
@@ -132,7 +131,6 @@ import {
     
     updateFile(file: CommonFile): void {
         const index = this.files.findIndex(({ id }) => file.id === id)
-        console.log('file', file)
         if (typeof index !== 'number') return
         this.files[index] = file
         this.cdr.detectChanges();

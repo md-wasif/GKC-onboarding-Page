@@ -1,5 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators} from "@angular/forms";
+import { ApiService } from '@app/api.service';
+import { Router } from '@angular/router';
+
 
 @Component({
     selector: 'login-form',
@@ -13,11 +16,11 @@ export class LoginFormComponent implements OnInit {
 
     @Input() thirPartyLogin = true
  
-    constructor(private formBuilder: FormBuilder) {}
+    constructor(private formBuilder: FormBuilder, private api_service: ApiService, private router: Router) {}
 
     ngOnInit() {
         this.formGroup = this.formBuilder.group({
-            username: ['', [
+            email: ['', [
                 Validators.required
             ]],
             password: ['', [
@@ -27,7 +30,17 @@ export class LoginFormComponent implements OnInit {
     }
  
     login() {
-        console.log(this.formGroup);
+        let body = { 
+            email: this.formGroup.value.email,
+            password: this.formGroup.value.password
+          }
+        
+        this.api_service.login(body).subscribe(res => {
+            localStorage.setItem("token",res.data.token)
+            if (res.code) {
+              this.router.navigate(['/dashboard/usermanagement']);
+            }
+          })
     }
 
     onShowPasswordClick () {

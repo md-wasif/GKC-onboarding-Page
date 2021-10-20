@@ -31,7 +31,6 @@ export class NavNotificationComponent implements OnInit {
     }
     
     loadData() {
-        console.log('Load Data');
     }
 
     getTimeDistance(time: number) {
