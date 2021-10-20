@@ -17,26 +17,22 @@ export class BrandManagementComponent implements OnInit {
     public products: Array<any> = [];
     public brand: Array<any> = [];
     value = true;
-    allBrands:any = [];
-    
+    public allBrands:Array<any> = [];
+
 
     constructor(private modalService: BsModalService, private formBuilder: FormBuilder, private api_service: ApiService) {}
 
     ngOnInit() {
-      
-      this.displayOfBrands();    
-     
-      // this.formGroup = this.formBuilder.group({
-      //     Age: [null, Validators.required]
-      // });
-    }
-
-    displayOfBrands() {
       this.api_service.getAllBrands().subscribe(res => {
         if (res) {
-          this.allBrands = res;
+          this.allBrands = res
         }
       })
+
+      
+      this.formGroup = this.formBuilder.group({
+          Age: [null, Validators.required]
+      });
     }
 
     openModal(template: TemplateRef<any>) {
