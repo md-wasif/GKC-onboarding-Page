@@ -38,6 +38,7 @@ export class UserManagementComponent implements OnInit {
     public viewUserDetails:Array<any> = [];
     value = true;
     public allUsers:Array<any> = []
+    public user;
 
     
     @ViewChild(DatatableComponent) table: DatatableComponent;
@@ -93,6 +94,7 @@ export class UserManagementComponent implements OnInit {
     viewUserModal(row, viewUserModal) {
         this.userManagementService.viewUser(row._id).subscribe(res => {
         this.viewUserDetails = res
+        console.log(this.viewUserDetails)
         })
         this.openModal(viewUserModal)
     }
@@ -100,8 +102,10 @@ export class UserManagementComponent implements OnInit {
 
     // open update user modal
     updateUserModal(row, updatetemplate) {
+        this.user = row;
         this.userManagementService.viewUser(row._id).subscribe(res => {
-            this.viewUserDetails = res
+            this.viewUserDetails = res[0]
+            console.log(this.viewUserDetails)
             })
         this.openModal(updatetemplate)
     }
@@ -110,14 +114,14 @@ export class UserManagementComponent implements OnInit {
     // open update user modal
     updateUserDetails(user, updatetemplate) {
         let body = { 
-            firstName: this.formGroup.value.firstname,
-            lastName: this.formGroup.value.lastname,
-            email: this.formGroup.value.email
-            // password: this.formGroup.value.password
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
           }
           this.userManagementService.updateUserDetails(body, user._id).subscribe(res => {
               if(res) {
                 this.modalService.hide(updatetemplate);
+                window.location.reload();
               }
           })
     }
@@ -135,12 +139,14 @@ export class UserManagementComponent implements OnInit {
 
 
       toggleUser(event:any,user:any){
-        if(user){
+          console.log(event, user)
+        if(event.checked == true){
             let body = {
                 isActive: event.checked
               }
-            user.isActive = event.checked;
+            console.log(body)
             this.userManagementService.toggleUser(body, user).subscribe(res=>{
+                console.log(res)
               })
         }
     }

@@ -79,10 +79,9 @@ export class UserManagementService {
     let requestBody = {
       isActive: data.isActive,
     }
+    console.log(data.isActive, user._id)
     return this.http.put(
       `http://localhost:5000/deactivateUser/?userId=${user._id}`, requestBody
     )
-  }
-
-    
+  }  
 }
