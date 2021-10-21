@@ -89,6 +89,7 @@ export class UserManagementComponent implements OnInit {
     }
     this.userManagementService.createUser(body).subscribe(res => {
       if (res) {
+          console.log(res)
         this.modalService.hide(createusertemplate);
         window.location.reload();
         }

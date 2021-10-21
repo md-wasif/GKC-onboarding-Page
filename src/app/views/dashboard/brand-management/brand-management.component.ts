@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, OnInit, TemplateRef } from '@angular/core
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal'
 import { FormBuilder, FormGroup, Validators} from "@angular/forms";
 import { ApiService } from '@app/api.service';
+import { Console } from 'console';
 
 @Component({
     selector: 'brand-management',
@@ -51,10 +52,13 @@ export class BrandManagementComponent implements OnInit {
 
     openCuisineModal(cuisineModal) {
       this.api_service.getCuisines().subscribe(res => {
-        this.options = res
-        if ("cuisine" in localStorage) {
-          let selectedCuisine = JSON.parse(localStorage.getItem("cuisine")) 
-          this.searchInput = selectedCuisine.name
+        if(res.code == "OK") {
+          console.log(res.data.cuisines)
+          this.options = res.data.cuisines
+          if ("cuisine" in localStorage) {
+            let selectedCuisine = JSON.parse(localStorage.getItem("cuisine")) 
+            this.searchInput = selectedCuisine.name
+          }
         }
       })
       this.openModal(cuisineModal)
@@ -67,11 +71,14 @@ export class BrandManagementComponent implements OnInit {
     openBrandModal(brandModal) {
       this.searchInput = ""
       this.api_service.getBrands().subscribe(res => {
-        this.options = res
-        if ("brand" in localStorage) {
-          let selectedBrand = JSON.parse(localStorage.getItem("brand")) 
-          this.searchInput = selectedBrand.name
+        if(res.code == "OK") {
+          this.options = res.data.brands
+          if ("brand" in localStorage) {
+            let selectedBrand = JSON.parse(localStorage.getItem("brand")) 
+            this.searchInput = selectedBrand.name
+          }
         }
+        
       })
 
       this.openModal(brandModal)
@@ -85,8 +92,8 @@ export class BrandManagementComponent implements OnInit {
     openProductsModal(productsModal) {
       this.searchInput = ""
       this.api_service.getProducts().subscribe(res => {
-        if (res) {
-          this.options = res
+        if (res.code == "OK") {
+          this.options = res.data.products
           if ("brand" in localStorage) {
             let selectedBrand = JSON.parse(localStorage.getItem("brand")) 
             this.searchInput = selectedBrand.name
