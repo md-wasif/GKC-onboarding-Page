@@ -9,6 +9,22 @@
     font-size: 20px !important;
 }
 
+datatable-body-cell.datatable-body-cell.sort-active {
+    justify-content: center !important;
+}
+
+.ngx-datatable .form-check {
+    margin-left: 40%;
+}
+
+div.brandsLength.fw-bold {
+    justify-content: center !important;
+    margin-left: 50px;
+}
+
+.brandsLength {
+    margin-left: 60px !important;
+}
 
 div.d-flex.align-items-center {
     justify-content: center;
@@ -26,3 +42,18 @@ div.d-flex.align-items-center {
     justify-content: space-evenly;
 }
 
+div.datatable-footer-inner.selected-count {
+    display: none !important;
+}
+
+.createUserButton {
+    margin-left: 12px !important;
+}
+
+.createBrandButton {
+    margin: 15px 0px 15px 20px;
+}
+
+.userBrandImage {
+    height: 50px;
+}

@@ -2,7 +2,7 @@
   <div class="card">
     <div class="card-body">
       <div class="row mb-3" style="width: 150px;">
-        <button type="button" class="btn btn-primary" (click)="openModal(createusertemplate)">
+        <button type="button" class="btn btn-primary createUserButton" (click)="openModal(createusertemplate)">
           <i class="feather icon-user-plus"></i> Create user
         </button>
       </div>
@@ -10,7 +10,7 @@
         <h4 class="mb-2 fw-bolder">Users List</h4>
         <div class="mb-2">
           <input type="text" class="form-control mb-3" placeholder="Search user by name"
-            (keyup)="updateFilter($event)" />
+            (keyup)="updateFilter($event)"/>
         </div>
       </div>
       <div class="table-responsive">
@@ -29,22 +29,35 @@
             </ng-template>
           </ngx-datatable-column>
           <ngx-datatable-column name="No of brands" [width]="50">
-            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-              {{row['phone']}}
+            <ng-template let-row="row" class="" let-value="value" ngx-datatable-cell-template>
+              <div>
+                <div class="brandsLength fw-bold">{{row['brands'].length}}</div>
+              </div>
             </ng-template>
           </ngx-datatable-column>
-          <ngx-datatable-column name="View" [sortable]="false" [width]="10">
+          <!-- <ngx-datatable-column name="View" [sortable]="false" [width]="10">
             <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
               <button type="button" class="btn btn-primary" (click)="viewUserModal(row, viewtemplate)">
                 View
               </button>
+            </ng-template>
+          </ngx-datatable-column> -->
+          <ngx-datatable-column name="View" [sortable]="false" [width]="10">
+            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+              <div class="d-flex align-items-center"
+                [ngClass]="row['status'] === 'active'? 'text-success': 'text-danger'">
+                <span class="text-capitalize">
+                  <button type="button" class="btn btn-primary" (click)="viewUserModal(row, viewtemplate)">
+                    View
+                  </button>
+                </span>
+              </div>
             </ng-template>
           </ngx-datatable-column>
           <ngx-datatable-column name="Update" [sortable]="false" [width]="10">
             <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
               <div class="d-flex align-items-center"
                 [ngClass]="row['status'] === 'active'? 'text-success': 'text-danger'">
-                <!-- <span class="badge-dot me-2" [ngClass]="row['status'] === 'active'? 'bg-success': 'bg-danger'"></span> -->
                 <span class="text-capitalize">
                   <button type="button" class="btn btn-primary" (click)="updateUserModal(row, updatetemplate)">
                     Update
@@ -63,10 +76,9 @@
               </a>
             </ng-template>
           </ngx-datatable-column>
-          <ngx-datatable-column name="Activate/<br>Deactivate" [sortable]="false" cellClass="allow-overflow"
-            [width]="40">
+          <ngx-datatable-column name="Activate/<br>Deactivate" [sortable]="false" cellClass="allow-overflow" [width]="40">
             <ng-template let-row="row" let-value="row['isActive']" ngx-datatable-cell-template>
-              <switch name="basicSwitch" [(ngModel)]="row.isActive" [checked]="row.isActive" (onChange)="toggleUser($event,row)"></switch>
+              <switch name="basicSwitch" [(ngModel)]="row.isActive" [checked]="row.isActive" (onChange)="toggleUser($event, row)"></switch>
             </ng-template>
           </ngx-datatable-column>
         </ngx-datatable>
@@ -89,10 +101,7 @@
     <h6>Email: {{viewUserDetails.email}}</h6>
     <h6>Brands:</h6>
     <div *ngFor="let userDetail of viewUserDetails.brands">
-      <!-- <div *ngFor="let user of userDetails"> -->
-        
         <span> {{userDetail.name}}</span>
-      <!-- </div> -->
     </div>
   <button type="button" class="btn btn-primary mt-3" (click)="modalRef.hide()">Close</button>
   </div>

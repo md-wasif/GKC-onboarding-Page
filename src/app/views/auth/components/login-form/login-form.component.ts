@@ -37,7 +37,7 @@ export class LoginFormComponent implements OnInit {
         
         this.api_service.login(body).subscribe(res => {
             localStorage.setItem("token",res.data.token)
-            if (res.code) {
+            if (res.code == "OK") {
               this.router.navigate(['/dashboard/usermanagement']);
             }
           })

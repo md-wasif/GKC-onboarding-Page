@@ -83,6 +83,7 @@ export class ApiService {
 
   getAllBrands(): Observable<any> {
     let token = localStorage.getItem("token")
+    console.log(token)
     let headers = new HttpHeaders();
     headers = headers.set('auth-token', token)
     return this.http.get(`http://localhost:5000/getAllBrands`, {headers: headers}
@@ -96,4 +97,16 @@ export class ApiService {
       `http://localhost:5000/viewBrand?userBrand=${userBrandId}`
     ).pipe(catchError(this.handleError))
   }
+
+
+  // toggle brand
+  public toggleBrand(data, userBrand) {
+    let requestBody = {
+      isActive: data.isActive,
+    }
+    console.log(data.isActive, userBrand)
+    return this.http.put(
+      `http://localhost:5000/toggleBrand/?userBrandId=${userBrand}`, requestBody
+    )
+  }  
 }

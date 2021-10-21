@@ -40,6 +40,9 @@ export class UserManagementComponent implements OnInit {
     public allUsers:Array<any> = []
     public user;
 
+    public getAllUsersResponse:Array<any> = [];
+    public getUserResponse:Array<any> = [];
+
     
     @ViewChild(DatatableComponent) table: DatatableComponent;
     constructor(private userManagementService: UserManagementService, private cdr: ChangeDetectorRef, private screenSizeSvc: ScreenSizeService, private modalService: BsModalService, private formBuilder: FormBuilder, private api_service: ApiService, private router: Router) {  
@@ -66,8 +69,11 @@ export class UserManagementComponent implements OnInit {
     //get users data on load
     getUsers() {
         this.userManagementService.getUsers().subscribe(data => {
-            this.users = data
-            this.temp = [...data]
+            this.getAllUsersResponse.push(data)
+            if (this.getAllUsersResponse[0].code == "OK") {
+                this.users = this.getAllUsersResponse[0].data.users
+            }
+            // this.temp = [...data]
             this.cdr.markForCheck();
         });
     }
@@ -93,8 +99,13 @@ export class UserManagementComponent implements OnInit {
     // view user API
     viewUserModal(row, viewUserModal) {
         this.userManagementService.viewUser(row._id).subscribe(res => {
-        this.viewUserDetails = res
-        console.log(this.viewUserDetails)
+            console.log(res)
+            this.getUserResponse.push(res)
+            if(this.getUserResponse[0].code == "OK") {
+                this.viewUserDetails = this.getUserResponse[0].data.getuserDetails
+                console.log(this.viewUserDetails)
+            }
+        
         })
         this.openModal(viewUserModal)
     }
@@ -138,17 +149,15 @@ export class UserManagementComponent implements OnInit {
       }
 
 
-      toggleUser(event:any,user:any){
+      toggleUser(event:any, user:any){
           console.log(event, user)
-        if(event.checked == true){
             let body = {
                 isActive: event.checked
               }
-            console.log(body)
+            // console.log(body)
             this.userManagementService.toggleUser(body, user).subscribe(res=>{
                 console.log(res)
               })
-        }
     }
 
     

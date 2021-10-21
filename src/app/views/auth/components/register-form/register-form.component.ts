@@ -30,7 +30,7 @@ export class RegisterFormComponent implements OnInit {
             password: this.formGroup.value.password
           }
         this.api_service.register(body).subscribe(res => {
-            if (res.user) {
+            if (res.code == "OK") {
               this.router.navigate(['/auth/login']);
             }
           })

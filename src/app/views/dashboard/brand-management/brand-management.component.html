@@ -1,197 +1,203 @@
-<div class="row mb-3"  style="width: 152px;">
-    <button type="button" class="btn btn-primary" (click)="openCuisineModal(cuisineModal)">
-        <i class="feather icon-user-plus"></i> Create brand
-    </button>  
-</div>
+<div>
+  <div class="row mb-3" style="width: 152px;">
+    <button type="button" class="btn btn-primary createBrandButton" (click)="openCuisineModal(cuisineModal)">
+      <i class="feather icon-user-plus"></i> Create brand
+    </button>
+  </div>
 
 
 
-<div class="row brand-card">
-    <div class="col-md-4">
-        <div class="brandcard-body">
-            <div class="d-flex align-items-center justify-content-between">
-                <h4>Brands</h4>
-                <!-- <button class="btn btn-sm btn-outline-secondary">All Review</button> -->
-            </div>
-            <div>
-                <perfect-scrollbar style="overflow-y: auto; height: 365px;">
-                    <div class="my-3" *ngFor="let brands of allBrands">
-                        <div class="d-flex pe-3">
-                            <div class="mt-1">
-                                <img src="assets/images/link-doc.png" alt="component on github"/>
-                            </div>
-                            <div class="ms-2 w-100">
-                                <div class="mb-2 d-md-flex justify-content-between align-items-center">
-                                    <div>
-                                        <div class="fw-bolder text-dark">{{brands.brand.name}}</div>
-                                        <div class="text-muted fw-semibold">No of products: {{brands.products.length}}</div>
-                                    </div>
-                                    <div>
-                                        <p>Activate/Deactivate</p>
-                                        <switch name="basicSwitch" [(ngModel)]="value"></switch>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-6">
-                                        <button class="btn btn-primary col-6" (click)="openBrandDetailsModal(brands, viewBrandDetailsModal)">View</button>
-                                    </div>
-                                    <div class="col-6">
-                                        <button class="btn btn-primary col-6" (click)="openUpdateBrandDetailsModal(brands, viewUpdateBrandDetailsModal)">Update</button>
-                                    </div>
-                                </div>
-                                <p class="mb-3"></p>
-                            </div>
-                        </div>
-                    <hr>
-                    </div>
-                </perfect-scrollbar>
-            </div>
+  <div class="row brand-card">
+    <div class="col-md-6">
+      <div class="brandcard-body">
+        <div class="d-flex align-items-center justify-content-between">
+          <h4>Brands</h4>
         </div>
+        <div>
+          <perfect-scrollbar style="overflow-y: auto; height: 365px;">
+          <div class="my-3" *ngFor="let brands of allBrands">
+            <div class="d-flex pe-3">
+              <div class="mt-1">
+                <img class="userBrandImage" src="../../../../assets/images/cuisines/Indian.jpg" alt="component on github" />
+              </div>
+              <div class="ms-2 w-100">
+                <div class="mb-2 d-md-flex justify-content-between align-items-center">
+                  <div>
+                    <div class="fw-bolder text-dark">{{brands.brand.name}}</div>
+                    <div class="text-muted fw-semibold">No of products: {{brands.products.length}}</div>
+                  </div>
+                  <div>
+                    <p>Activate/Deactivate</p>
+                    <switch name="basicSwitch" [(ngModel)]="brands.isActive" [checked]="brands.isActive" (onChange)="toggleUser($event, brands._id)"></switch>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-6">
+                    <button class="btn btn-primary col-6"
+                      (click)="openBrandDetailsModal(brands, viewBrandDetailsModal)">View</button>
+                  </div>
+                  <div class="col-6">
+                    <button class="btn btn-primary col-6"
+                      (click)="openUpdateBrandDetailsModal(brands, viewUpdateBrandDetailsModal)">Update</button>
+                  </div>
+                </div>
+                <p class="mb-3"></p>
+              </div>
+            </div>
+            <hr>
+          </div>
+          </perfect-scrollbar>
+        </div>
+      </div>
     </div>
+  </div>
+
 </div>
-
-
 
 <ng-template #cuisineModal>
-    <div class="modal-header">
-      <h4 class="modal-title pull-left">Select cuisine</h4>
-      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
-        <span aria-hidden="true">&times;</span>
-      </button>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Select cuisine</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-12 col-md-offset-3">
+        <form [formGroup]="formGroup">
+          <div class="form-group mb-3">
+
+            <!-- <label class="form-label">Cuisines</label> -->
+            <!-- <ng-select [items]="options" bindLabel="name" bindValue="_id" labelForId="age" placeholder="Select cuisines"
+              formControlName="Age" (change)="cuisineValue(selection)" [(ngModel)]="selection">
+            </ng-select> -->
+
+            <label class="form-label">Cuisines</label>
+            <ng-select [items]="options" [(ngModel)]="selection" bindLabel="name" labelForId="age" placeholder="Select cuisines" bindValue="_id"
+                        formControlName="Age" (change)="cuisineValue(selection)">
+              <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                  <div *ngIf="item.name === 'Kaunas'">{{item.name}}</div>
+                  <div style="margin: 10px 0;" class="card" *ngIf="item.name !== 'Kaunas'">
+                      <div class="card-body">
+                          <h5 class="card-title" [ngOptionHighlight]="search">{{item.name}}</h5>
+                          <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                          <p class="card-text">
+                              <img height="15" width="15" src = "../../../../assets/images/cuisines/{{item.name}}.jpg"/>
+                              Some quick example text to build
+                          </p>
+                          <div *ngIf="item.name === 'Pavilnys'">
+                              <a href="#" class="card-link">Card link</a>
+                              <a href="#" class="card-link">Another link</a>
+                          </div>
+                      </div>
+                  </div>
+              </ng-template>
+          </ng-select>
+
+          </div>
+          <button class="btn btn-primary" type="submit" (click)="modalRef.hide(cuisineModal)"
+            (click)="openBrandModal(brandModal)">Next</button>
+        </form>
+      </div>
     </div>
-    <div class="modal-body">
-      <div class="row">
-        <div class="col-md-12 col-md-offset-3">
-            <form [formGroup]="formGroup">
-                <div class="form-group mb-3">
-                    <label class="form-label">Cuisines</label>
-                    <ng-select [items]="options"
-                       bindLabel="name"
-                       bindValue="_id"
-                       labelForId="age"
-                       placeholder="Select cuisines"
-                       formControlName="Age"
-                       (change)="cuisineValue(selection)"
-                       [(ngModel)]="selection">
-                    </ng-select>
-                </div>
-                <button class="btn btn-primary" type="submit" (click)="modalRef.hide(cuisineModal)" (click)="openBrandModal(brandModal)">Next</button>
-            </form>
-        </div>
-    </div>
-    </div>
+  </div>
 </ng-template>
 
 
 <ng-template #brandModal>
-    <div class="modal-header">
-      <h4 class="modal-title pull-left">Select brand</h4>
-      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
-        <span aria-hidden="true">&times;</span>
-      </button>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Select brand</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-12 col-md-offset-3">
+        <form [formGroup]="formGroup">
+          <div class="form-group mb-3">
+            <!-- <label class="form-label">Brands</label>
+            <ng-select [items]="options" class="custom" bindLabel="name" bindValue="_id" labelForId="age" placeholder="Select brands"
+              formControlName="Age" (change)="brandValue(selection)" [(ngModel)]="selection">
+              <span>
+                test description
+              </span>
+            </ng-select> -->
+
+            <label class="form-label">Brands</label>
+            <ng-select [items]="options" class="custom" [(ngModel)]="selection" bindLabel="name" bindValue="_id" placeholder="Select brands"
+                      formControlName="Age" (change)="brandValue(selection)">
+              <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                  <div *ngIf="item.name === 'Kaunas'">{{item.name}}</div>
+                  <div style="margin: 10px 0;" class="card" *ngIf="item.name !== 'Kaunas'">
+                      <div class="card-body">
+                          <h5 class="card-title" [ngOptionHighlight]="search">{{item.name}}</h5>
+                          <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                          <p class="card-text">
+                              <img height="15" width="15" src = "../../../../assets/images/cuisines/Indian.jpg"/>
+                              Some quick example text to build
+                          </p>
+                          <div *ngIf="item.name === 'Pavilnys'">
+                              <a href="#" class="card-link">Card link</a>
+                              <a href="#" class="card-link">Another link</a>
+                          </div>
+                      </div>
+                  </div>
+              </ng-template>
+          </ng-select>
+          </div>
+          <button class="btn btn btn-light me-2" type="button" (click)="modalRef.hide(brandModal)"
+            (click)="openCuisineModal(cuisineModal)">Back</button>
+          <button class="btn btn-primary" type="submit" (click)="modalRef.hide(brandModal)"
+            (click)="openProductsModal(productsModal)">Next</button>
+        </form>
+      </div>
     </div>
-    <div class="modal-body">
-      <div class="row">
-        <div class="col-md-12 col-md-offset-3">
-            <form [formGroup]="formGroup">
-                <div class="form-group mb-3">
-                    <label class="form-label">Brands</label>
-                    <ng-select [items]="options"
-                       bindLabel="name"
-                       bindValue="_id"
-                       labelForId="age"
-                       placeholder="Select brands"
-                       formControlName="Age"
-                       (change)="brandValue(selection)"
-                       [(ngModel)]="selection">
-                    </ng-select>
-                </div>
-                <button class="btn btn btn-light me-2" type="button" (click)="modalRef.hide(brandModal)" (click)="openCuisineModal(cuisineModal)">Back</button>
-                <button class="btn btn-primary" type="submit" (click)="modalRef.hide(brandModal)" (click)="openProductsModal(productsModal)">Next</button>
-            </form>
-        </div>
-    </div>
-    </div>
+  </div>
 </ng-template>
 
 
 
 <ng-template #productsModal>
-    <div class="modal-header">
-      <h4 class="modal-title pull-left">Select brand</h4>
-      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
-        <span aria-hidden="true">&times;</span>
-      </button>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Select Products</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-12 col-md-offset-3">
+        <form [formGroup]="formGroup">
+          <div class="form-check" *ngFor="let option of options">
+            <label class="form-check-label">
+              <input class="form-check-input" type="checkbox" (change)="testProducts($event, option)">
+              {{option.name}}<br><span>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form</span>
+              <br>
+              <span class="form-check-sign">
+                <span class="check"></span>
+              </span>
+            </label><br><br>
+          </div>
+          <button class="btn btn btn-light me-2" type="button" (click)="modalRef.hide(productsModal)"
+            (click)="openBrandModal(brandModal)">Back</button>
+          <button class="btn btn-primary" type="submit" (click)="modalRef.hide(productsModal)"
+            (click)="createBrand()">Submit</button>
+        </form>
+      </div>
     </div>
-    <div class="modal-body">
-      <div class="row">
-        <div class="col-md-12 col-md-offset-3">
-            <form [formGroup]="formGroup">
-                <div class="form-check" *ngFor= "let option of options">
-                    <label class="form-check-label">
-                      <input class="form-check-input" type="checkbox" (change)="testProducts($event, option)"> 
-                      {{option.name}}
-                      <span class="form-check-sign">
-                        <span class="check"></span>
-                      </span>
-                    </label><br><br>
-                  </div>
-                <button class="btn btn btn-light me-2" type="button" (click)="modalRef.hide(productsModal)" (click)="openBrandModal(brandModal)">Back</button>
-                <button class="btn btn-primary" type="submit" (click)="modalRef.hide(productsModal)" (click)="createBrand()">Submit</button>
-            </form>
-        </div>
-    </div>
-    </div>
+  </div>
 </ng-template>
 
 
 
 
 
-<!-- <div class="card-body">
-    <div class="d-flex align-items-center justify-content-between mb-3">
-        <h4>Recent Review</h4>
-        <button class="btn btn-sm btn-outline-secondary">All Review</button>
-    </div>
-    <div *ngIf="data">
-        <perfect-scrollbar style="overflow-y: auto; height: 365px;">
-            <div class="my-3" [ngClass]="{'border-bottom': i !== data.length - 1}" *ngFor="let item of data; let i = index">
-                <div class="d-flex pe-3">
-                    <div class="mt-1">
-                        <avatar [size]="35" [src]="item.img"></avatar>
-                    </div>
-                    <div class="ms-2 w-100">
-                        <div class="mb-2 d-md-flex justify-content-between align-items-center">
-                            <div>
-                                <div class="fw-bolder text-dark">{{item.name}}</div>
-                                <div class="text-muted fw-semibold">{{item.date | date: 'dd MMM yyyy'}}</div>
-                            </div>
-                            <div>
-                                <i 
-                                    class="font-size-lg"
-                                    [ngClass]="item.rating >= star ? 'la la-star text-warning' : 'la la-star-o text-muted'" 
-                                    *ngFor="let star of maxRate"
-                                >
-                                </i>
-                            </div>
-                        </div>
-                        <p class="mb-3">{{item.review}}</p>
-                    </div>
-                </div>
-            </div>
-        </perfect-scrollbar>
-    </div>
-</div> -->
 
 
 
 
-
-
-
-
-
-<ng-template #viewBrandModal>
+<!-- <ng-template #viewBrandModal>
     <div class="modal-header">
       <h4 class="modal-title pull-left">View brand</h4>
       <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
@@ -220,70 +226,60 @@
         </div>
     </div>
     </div>
-</ng-template>
+</ng-template> -->
 
 
 
 <ng-template #viewBrandDetailsModal>
-    <div class="modal-header">
-      <h4 class="modal-title pull-left">Brand details</h4>
-      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">
-      <div class="row" *ngIf="options">
-        <div class="col-md-12 col-md-offset-3">
-            <!-- <div>Brand name: {{options[0].brand._id}}</div> -->
-            <!-- <div>Products: {{}}</div> -->
-            <!-- <form [formGroup]="formGroup">
-                <div class="form-group mb-3">
-                    <label class="form-label">Brands</label>
-                    <ng-select [items]="options"
-                       bindLabel="name"
-                       bindValue="_id"
-                       labelForId="age"
-                       placeholder="Select brands"
-                       formControlName="Age"
-                       (change)="brandValue(selection)"
-                       [(ngModel)]="selection">
-                    </ng-select>
-                </div>
-                <button class="btn btn btn-light me-2" type="button" (click)="modalRef.hide(brandModal)" (click)="openCuisineModal(cuisineModal)">Back</button>
-                <button class="btn btn-primary" type="submit" (click)="modalRef.hide(brandModal)" (click)="openProductsModal(productsModal)">Next</button>
-            </form> -->
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Brand details</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-12 col-md-offset-3">
+        <h6>Brandname: {{options.brand.name}}</h6>
+        <h6>Products:</h6>
+        <div *ngFor="let option of options.product">
+            <span> {{option.name}}</span>
         </div>
+      </div>
     </div>
-    </div>
+    <button class="btn btn-primary mt-3" type="submit" (click)="modalRef.hide()">Close</button>
+  </div>
 </ng-template>
 
 
 
 
 <ng-template #viewUpdateBrandDetailsModal>
-    <div class="modal-header">
-      <h4 class="modal-title pull-left">Select brand</h4>
-      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
-        <span aria-hidden="true">&times;</span>
-      </button>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Select brand</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-12 col-md-offset-3">
+        <form [formGroup]="formGroup">
+          <div class="form-check" *ngFor="let option of options">
+            <label class="form-check-label">
+              <input class="form-check-input" type="checkbox" (change)="testProducts($event, option)" [checked]="option.isChecked">
+              {{option.name}}
+              <span class="form-check-sign">
+                <span class="check"></span>
+              </span>
+            </label><br><br>
+          </div>
+          <button class="btn btn btn-light me-2" type="button" (click)="modalRef.hide(productsModal)"
+            (click)="openBrandModal(brandModal)">Back</button>
+          <button class="btn btn-primary" type="submit" (click)="modalRef.hide(productsModal)"
+            (click)="createBrand()">Submit</button>
+        </form>
+      </div>
     </div>
-    <div class="modal-body">
-      <div class="row">
-        <div class="col-md-12 col-md-offset-3">
-            <form [formGroup]="formGroup">
-                <div class="form-check" *ngFor= "let option of options">
-                    <label class="form-check-label">
-                      <input class="form-check-input" type="checkbox" (change)="testProducts($event, option)"> 
-                      {{option.name}}
-                      <span class="form-check-sign">
-                        <span class="check"></span>
-                      </span>
-                    </label><br><br>
-                  </div>
-                <button class="btn btn btn-light me-2" type="button" (click)="modalRef.hide(productsModal)" (click)="openBrandModal(brandModal)">Back</button>
-                <button class="btn btn-primary" type="submit" (click)="modalRef.hide(productsModal)" (click)="createBrand()">Submit</button>
-            </form>
-        </div>
-    </div>
-    </div>
+  </div>
 </ng-template>

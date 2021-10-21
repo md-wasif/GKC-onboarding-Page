@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, TemplateRef } from '@angular/core';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal'
 import { FormBuilder, FormGroup, Validators} from "@angular/forms";
 import { ApiService } from '@app/api.service';
@@ -19,14 +19,23 @@ export class BrandManagementComponent implements OnInit {
     value = true;
     public allBrands:Array<any> = [];
 
+    public getAllBrands:Array<any> = [];
+    public viewBrand:Array<any> = [];
 
-    constructor(private modalService: BsModalService, private formBuilder: FormBuilder, private api_service: ApiService) {}
+
+    constructor(private modalService: BsModalService, 
+      private formBuilder: FormBuilder, 
+      private api_service: ApiService,
+      private cd:ChangeDetectorRef
+      ) {}
 
     ngOnInit() {
       this.api_service.getAllBrands().subscribe(res => {
-        if (res) {
-          this.allBrands = res
+        this.getAllBrands.push(res)
+        if (this.getAllBrands[0].code == "OK") {
+          this.allBrands = this.getAllBrands[0].data.userBrands
         }
+        this.cd.detectChanges();
       })
 
       
@@ -95,6 +104,7 @@ export class BrandManagementComponent implements OnInit {
         brandId: brandId,
         productsId: this.products
       }
+      console.log(this.products)
       this.api_service.createBrand(body).subscribe(res => {
         if (res) {
           window.location.reload();
@@ -107,7 +117,7 @@ export class BrandManagementComponent implements OnInit {
 
     testProducts(e, product) {
       if (e.target.checked == true) {
-        this.products.push(product._id)
+        this.products.push(product._id);
         this.brand.push(product.name)
       }
       else {
@@ -119,10 +129,12 @@ export class BrandManagementComponent implements OnInit {
 
 
     openBrandDetailsModal(brands, viewBrandDetailsModal) {
-      console.log(brands._id)
+      this.viewBrand = [];
       this.api_service.viewBrand(brands._id).subscribe(res => {
-        console.log(res)
-        this.options = res
+      this.viewBrand.push(res)
+      if(this.viewBrand[0].code == "OK") {
+        this.options = this.viewBrand[0].data.getuserbrands
+      }
         this.openModal(viewBrandDetailsModal)
       })
 
@@ -133,14 +145,15 @@ export class BrandManagementComponent implements OnInit {
 
     openUpdateBrandDetailsModal(brands, viewUpdateBrandDetailsModal) {
       let selectedProducts: Array<any> = [];
-      // this.id = brands.brand._id
-      localStorage.setItem("brand",JSON.stringify(brands.brand))
+      localStorage.setItem("brand",JSON.stringify(brands.brand._id))
       this.api_service.viewBrand(brands._id).subscribe(response => {
-        selectedProducts =  response[0].product
+        selectedProducts =  response.data.getuserbrands.product
+        console.log(selectedProducts)
       })
       this.api_service.getProducts().subscribe(res => {
-        if (res) {
-          this.options = res
+        if (res.code == "OK") {
+          console.log(res.data.products)
+          this.options = res.data.products
           this.options = this.options.map((el)=>{
             if (selectedProducts.find(x => x._id == el._id)) {
               return {...el, isChecked:true}
@@ -154,6 +167,17 @@ export class BrandManagementComponent implements OnInit {
         }
       })
     }
+
+
+    toggleUser(event:any, brand:any){
+      console.log(event, brand)
+        let body = {
+            isActive: event.checked
+          }
+        this.api_service.toggleBrand(body, brand).subscribe(res=>{
+            console.log(res)
+          })
+}
   
 
     // openBrandModal() {

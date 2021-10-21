@@ -58,66 +58,66 @@
 		}
 	}
 
-	.datatable-footer {
-		margin-top: -1px;
-		.page-count {
-			line-height: 2.5rem;
-			height: 2.5rem;
-			padding: 0 $table-cell-padding-x;
-			font-weight: $font-weight-bolder;
-		}
-		.datatable-pager {
-			margin: 0 10px;
-			vertical-align: top;
-			ul {
-				&.pager {
-					display: inline-flex;
-					align-items: center;
-				}
+	// .datatable-footer {
+	// 	margin-top: -1px;
+	// 	.page-count {
+	// 		line-height: 2.5rem;
+	// 		height: 2.5rem;
+	// 		padding: 0 $table-cell-padding-x;
+	// 		font-weight: $font-weight-bolder;
+	// 	}
+	// 	.datatable-pager {
+	// 		margin: 0 10px;
+	// 		vertical-align: top;
+	// 		ul {
+	// 			&.pager {
+	// 				display: inline-flex;
+	// 				align-items: center;
+	// 			}
 
-				li {
-					margin: 10px 0px;
-					&:not(.disabled) {
+	// 			li {
+	// 				margin: 10px 0px;
+	// 				&:not(.disabled) {
 						
-						&:hover {
-							a {
-								color: $primary;
-							}
-						}
+	// 					&:hover {
+	// 						a {
+	// 							color: $primary;
+	// 						}
+	// 					}
 
-						&.active {
-							a {
-								color: $white;
-								background-color: $primary;
-							}
-						}
-					}
+	// 					&.active {
+	// 						a {
+	// 							color: $white;
+	// 							background-color: $primary;
+	// 						}
+	// 					}
+	// 				}
 
-					&.disabled {
-						a {
-							color: $gray-400;
-						}
-					}
-				}
-			}
-			a {
-				height: 1.5rem;
-				min-width: 1.5rem;
-				line-height: 1.5rem;
-				margin-right: 0.4rem;
-				text-align: center;
-				border-radius: 50%;
-			}
-			.datatable-icon-left,
-			.datatable-icon-skip,
-			.datatable-icon-right,
-			.datatable-icon-prev {
-				font-size: 18px;
-				line-height: 32px;
-				padding: 0 3px;
-			}
-		}
-	}
+	// 				&.disabled {
+	// 					a {
+	// 						color: $gray-400;
+	// 					}
+	// 				}
+	// 			}
+	// 		}
+	// 		a {
+	// 			height: 1.5rem;
+	// 			min-width: 1.5rem;
+	// 			line-height: 1.5rem;
+	// 			margin-right: 0.4rem;
+	// 			text-align: center;
+	// 			border-radius: 50%;
+	// 		}
+	// 		.datatable-icon-left,
+	// 		.datatable-icon-skip,
+	// 		.datatable-icon-right,
+	// 		.datatable-icon-prev {
+	// 			font-size: 18px;
+	// 			line-height: 32px;
+	// 			padding: 0 3px;
+	// 		}
+	// 	}
+	// }
 	
 	.datatable-summary-row {
 		.datatable-body-row {

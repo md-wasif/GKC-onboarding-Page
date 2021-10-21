@@ -1,5 +1,5 @@
 {
-  "name": "espire",
+  "name": "GKC",
   "version": "5.0.0",
   "scripts": {
     "ng": "ng",
@@ -42,6 +42,7 @@
     "chart.js": "^2.9.3",
     "date-fns": "^2.16.1",
     "miragejs": "^0.1.41",
+    "mongoose": "^6.0.11",
     "ng-apexcharts": "^1.5.7",
     "ng-bootstrap-form-validation": "^9.0.1",
     "ng-chartjs": "0.2.0",
