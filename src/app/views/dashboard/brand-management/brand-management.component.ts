@@ -7,6 +7,7 @@ import { Console } from 'console';
 @Component({
     selector: 'brand-management',
     templateUrl: './brand-management.component.html',
+    styleUrls: ['./brand-management.component.scss']
 })
 export class BrandManagementComponent implements OnInit {
 
@@ -15,13 +16,16 @@ export class BrandManagementComponent implements OnInit {
     options: Array<any> = [];
     public val: string;
     public searchInput: String;
+    public selection: String;
     public products: Array<any> = [];
     public brand: Array<any> = [];
     value = true;
     public allBrands:Array<any> = [];
+    public updateProduct:Array<any> = [];
 
     public getAllBrands:Array<any> = [];
     public viewBrand:Array<any> = [];
+    public userBrandId;
 
 
     constructor(private modalService: BsModalService, 
@@ -70,6 +74,7 @@ export class BrandManagementComponent implements OnInit {
 
     openBrandModal(brandModal) {
       this.searchInput = ""
+      this.selection = "Select brands"
       this.api_service.getBrands().subscribe(res => {
         if(res.code == "OK") {
           this.options = res.data.brands
@@ -151,28 +156,33 @@ export class BrandManagementComponent implements OnInit {
 
 
     openUpdateBrandDetailsModal(brands, viewUpdateBrandDetailsModal) {
+      this.userBrandId = brands._id
       let selectedProducts: Array<any> = [];
       localStorage.setItem("brand",JSON.stringify(brands.brand._id))
       this.api_service.viewBrand(brands._id).subscribe(response => {
         selectedProducts =  response.data.getuserbrands.product
+        this.products = selectedProducts
         console.log(selectedProducts)
+
+        this.api_service.getProducts().subscribe(res => {
+          if (res.code == "OK") {
+            console.log(res.data.products)
+            this.options = res.data.products
+            this.options = this.options.map((el)=>{
+              if (selectedProducts.find(x => x._id == el._id)) {
+                return {...el, isChecked:true}
+              }
+              else {
+                return {...el, isChecked:false}
+              }
+               
+            })
+            this.openModal(viewUpdateBrandDetailsModal)
+          }
+        })
       })
-      this.api_service.getProducts().subscribe(res => {
-        if (res.code == "OK") {
-          console.log(res.data.products)
-          this.options = res.data.products
-          this.options = this.options.map((el)=>{
-            if (selectedProducts.find(x => x._id == el._id)) {
-              return {...el, isChecked:true}
-            }
-            else {
-              return {...el, isChecked:false}
-            }
-             
-          })
-          this.openModal(viewUpdateBrandDetailsModal)
-        }
-      })
+     
+      this.cd.detectChanges();
     }
 
 
@@ -185,6 +195,20 @@ export class BrandManagementComponent implements OnInit {
             console.log(res)
           })
 }
+
+
+
+    updateBrand() {
+      let body = { 
+        productsId: this.products
+      }
+      this.api_service.editBrand(body, this.userBrandId).subscribe(res => {
+        console.log(res)
+        if (res) {
+          window.location.reload();
+        }
+      })
+    }
   
 
     // openBrandModal() {

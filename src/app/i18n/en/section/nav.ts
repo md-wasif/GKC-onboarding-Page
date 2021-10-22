@@ -1,7 +1,7 @@
 export const nav = {
     'NAV': {
         'DASHBOARD': 'Dashboard',
-        'USER_MANAGEMENT': 'User Management',
+        'USER_MANAGEMENT': 'Restaurant Management',
         'BRAND_MANAGEMENT': 'Brand Management'
     }
 }

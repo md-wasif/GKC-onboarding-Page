@@ -1,59 +1,92 @@
 .breadcrumb {
-    background-color: transparent;
-    margin-bottom: 0;
-    padding: 0 1rem;
+  background-color: transparent;
+  margin-bottom: 0;
+  padding: 0 1rem;
 }
 
 .ngx-datatable.fixed-header .datatable-header .datatable-header-inner .datatable-header-cell {
-    justify-content: center;
-    font-size: 20px !important;
+  justify-content: center;
+  font-size: 20px !important;
 }
 
 datatable-body-cell.datatable-body-cell.sort-active {
-    justify-content: center !important;
+  justify-content: center !important;
 }
 
 .ngx-datatable .form-check {
-    margin-left: 40%;
+  margin-left: 40%;
 }
 
 div.brandsLength.fw-bold {
-    justify-content: center !important;
-    margin-left: 50px;
+  justify-content: center !important;
+  margin-left: 50px;
 }
 
 .brandsLength {
-    margin-left: 60px !important;
+  margin-left: 45% !important;
 }
 
 div.d-flex.align-items-center {
-    justify-content: center;
+  justify-content: center;
 }
 
 .brandcard-body {
-    background-color: white;
-    border-radius: 8px;
-    margin: auto;
-    text-align: center;
-    padding: 20px 20px 20px;
+  background-color: white;
+  border-radius: 8px;
+  margin: auto;
+  text-align: center;
+  padding: 20px 20px 20px;
 }
 
 .brand-card {
-    justify-content: space-evenly;
+  justify-content: space-evenly;
 }
 
 div.datatable-footer-inner.selected-count {
-    display: none !important;
+  display: none !important;
 }
 
 .createUserButton {
-    margin-left: 12px !important;
+  margin-left: 12px !important;
 }
 
 .createBrandButton {
-    margin: 15px 0px 15px 20px;
+  margin: 15px 0px 15px 20px;
 }
 
 .userBrandImage {
-    height: 50px;
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
 }
+
+.product-checkbox {
+  margin-top: 5px !important;
+}
+
+.product-text {
+  margin-left: 10px !important;
+  text-transform: capitalize;
+}
+
+.checkbox-label {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+
+.card-img-top {
+  border-radius: 50%;
+  height: 100px;
+  width: 100px;
+  justify-content: center;
+}
+
+.list-group-item {
+  border: none;
+}
+
+logo.w-100.logo {
+  justify-content: center;
+}
+

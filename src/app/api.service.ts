@@ -109,4 +109,15 @@ export class ApiService {
       `http://localhost:5000/toggleBrand/?userBrandId=${userBrand}`, requestBody
     )
   }  
+
+
+  // edit brand
+  public editBrand(data, userBrandId) {
+    let requestBody = {
+      products: data.productsId,
+    }
+    return this.http.put(
+      `http://localhost:5000/editBrand/?userBrand=${userBrandId}`, requestBody
+    )
+  }  
 }

@@ -1,0 +1,43 @@
+@media screen and (min-width: 1200px) {
+    .card {
+      min-width: 300px;
+      max-width: 350px;
+    }
+  }
+  
+  
+  @media screen and (max-width: 600px) {
+    .card {
+      display: grid;
+    }
+  
+    div.row.card-group {
+      display: grid;
+    }
+  
+    .card-mobile {
+      width: 100% !important;
+    }
+  }
+  
+  
+  .checkbox-box {
+    display: flex;
+    justify-content: space-evenly;
+  
+    input {
+      width: 36px;
+    }
+  
+    img {
+      width: 70px !important;
+      height: 70px !important;
+    }
+  }
+  
+  input.form-check-input {
+    margin-top: 8% !important;
+    height: 20px;
+    width: 40px;
+  }
+  

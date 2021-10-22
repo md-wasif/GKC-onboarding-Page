@@ -13,7 +13,7 @@ const dashboard: NavMenu[] = [
     },
     {
         path: '/dashboard/usermanagement',
-        title: 'User Management',
+        title: 'Restaurant Management',
         translateKey: 'NAV.USER_MANAGEMENT',
         type: 'item',
         iconType: 'feather',

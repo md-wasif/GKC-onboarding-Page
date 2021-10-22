@@ -7,8 +7,8 @@
 
 
 
-  <div *ngIf="allBrands.length != 0" class="row brand-card">
-    <div class="col-md-6">
+  <!-- <div *ngIf="allBrands.length != 0" class="row brand-card">
+    <div class="col-md-5">
       <div class="brandcard-body">
         <div class="d-flex align-items-center justify-content-between">
           <h4>Brands</h4>
@@ -16,32 +16,23 @@
         <div>
           <perfect-scrollbar style="overflow-y: auto; height: 365px;">
           <div class="my-3" *ngFor="let brands of allBrands">
-            <div class="d-flex pe-3">
-              <div class="mt-1">
+            <div class="d-flex pe-3 row">
+              <div class="mt-1 col-2">
                 <img class="userBrandImage" src="../../../../assets/images/cuisines/Indian.jpg" alt="component on github" />
               </div>
-              <div class="ms-2 w-100">
-                <div class="mb-2 d-md-flex justify-content-between align-items-center">
-                  <div>
-                    <div class="fw-bolder text-dark">{{brands.brand.name}}</div>
-                    <div class="text-muted fw-semibold">No of products: {{brands.products.length}}</div>
-                  </div>
-                  <div>
-                    <p>Activate/Deactivate</p>
-                    <switch name="basicSwitch" [(ngModel)]="brands.isActive" [checked]="brands.isActive" (onChange)="toggleUser($event, brands._id)"></switch>
-                  </div>
+              <div class="col-5 mb-2 justify-content-between align-items-center">
+                <div>
+                  <div class="fw-bolder text-dark">{{brands.brand.name}}</div>
+                  <div class="text-muted fw-semibold">No of products: {{brands.products.length}}</div>
+                  <button class="btn btn-primary col-6 mt-3" (click)="openBrandDetailsModal(brands, viewBrandDetailsModal)">View</button>
                 </div>
-                <div class="row">
-                  <div class="col-6">
-                    <button class="btn btn-primary col-6"
-                      (click)="openBrandDetailsModal(brands, viewBrandDetailsModal)">View</button>
-                  </div>
-                  <div class="col-6">
-                    <button class="btn btn-primary col-6"
-                      (click)="openUpdateBrandDetailsModal(brands, viewUpdateBrandDetailsModal)">Update</button>
-                  </div>
+              </div>
+              <div class="col-5 mb-2 justify-content-between align-items-center">
+                <div>
+                  <p class="mb-1">Activate/Deactivate</p>
+                  <switch name="basicSwitch" [(ngModel)]="brands.isActive" [checked]="brands.isActive" (onChange)="toggleUser($event, brands._id)"></switch>
+                  <button class="btn btn-primary col-6 mt-1" (click)="openUpdateBrandDetailsModal(brands, viewUpdateBrandDetailsModal)">Update</button>
                 </div>
-                <p class="mb-3"></p>
               </div>
             </div>
             <hr>
@@ -50,7 +41,49 @@
         </div>
       </div>
     </div>
+  </div> -->
+  <div class="row card-group">
+    <div class="col-3 card-mobile col-md-4 col-sm-6 col-xs-12" *ngFor="let brands of allBrands">
+      <div class="card">
+        <img class="card-img-top mx-auto mt-1" src="../../../../assets/images/cuisines/Indian.jpg" alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title text-center">{{brands.brand.name}}</h5>
+        </div>
+        <div class="row">
+          <div class="col-8">
+            <li class="list-group-item">Activate/<br>deactivate</li>
+          </div>
+          <div class="col-4">
+            <li class="list-group-item">
+              <switch name="basicSwitch" [(ngModel)]="brands.isActive" [checked]="brands.isActive"
+                (onChange)="toggleUser($event, brands._id)"></switch>
+            </li>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-8">
+            <li class="list-group-item">Total products</li>
+          </div>
+          <div class="col-4">
+            <li class="list-group-item">{{brands.products.length}}</li>
+          </div>
+        </div>
+        <div class="card-body row text-center">
+          <div class="col-6">
+            <button class="btn btn-primary mt-3 text-center"
+              (click)="openBrandDetailsModal(brands, viewBrandDetailsModal)">View</button>
+          </div>
+          <div class="col-6">
+            <button class="btn btn-primary mt-3 text-center"
+              (click)="openUpdateBrandDetailsModal(brands, viewUpdateBrandDetailsModal)">Update</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+
+
+
 
 </div>
 
@@ -73,26 +106,26 @@
             </ng-select> -->
 
             <label class="form-label">Cuisines</label>
-            <ng-select [items]="options" [(ngModel)]="selection" bindLabel="name" labelForId="age" placeholder="Select cuisines" bindValue="_id"
-                        formControlName="Age" (change)="cuisineValue(selection)">
+            <ng-select [items]="options" [(ngModel)]="selection" bindLabel="name" labelForId="age"
+              placeholder="Select cuisines" bindValue="_id" formControlName="Age" (change)="cuisineValue(selection)">
               <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
-                  <div *ngIf="item.name === 'Kaunas'">{{item.name}}</div>
-                  <div style="margin: 10px 0;" class="card" *ngIf="item.name !== 'Kaunas'">
-                      <div class="card-body">
-                          <h5 class="card-title" [ngOptionHighlight]="search">{{item.name}}</h5>
-                          <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                          <p class="card-text">
-                              <img height="15" width="15" src = "../../../../assets/images/cuisines/{{item.name}}.jpg"/>
-                              Some quick example text to build
-                          </p>
-                          <div *ngIf="item.name === 'Pavilnys'">
-                              <a href="#" class="card-link">Card link</a>
-                              <a href="#" class="card-link">Another link</a>
-                          </div>
-                      </div>
+                <div *ngIf="item.name === 'Kaunas'">{{item.name}}</div>
+                <div style="margin: 10px 0;" class="card" *ngIf="item.name !== 'Kaunas'">
+                  <div class="card-body">
+                    <h5 class="card-title" [ngOptionHighlight]="search">{{item.name}}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                    <p class="card-text">
+                      <img height="15" width="15" src="../../../../assets/images/cuisines/{{item.name}}.jpg" />
+                      Some quick example text to build
+                    </p>
+                    <div *ngIf="item.name === 'Pavilnys'">
+                      <a href="#" class="card-link">Card link</a>
+                      <a href="#" class="card-link">Another link</a>
+                    </div>
                   </div>
+                </div>
               </ng-template>
-          </ng-select>
+            </ng-select>
 
           </div>
           <button class="btn btn-primary" type="submit" (click)="modalRef.hide(cuisineModal)"
@@ -125,26 +158,26 @@
             </ng-select> -->
 
             <label class="form-label">Brands</label>
-            <ng-select [items]="options" class="custom" [(ngModel)]="selection" bindLabel="name" bindValue="_id" placeholder="Select brands"
-                      formControlName="Age" (change)="brandValue(selection)">
+            <ng-select [items]="options" class="custom" [(ngModel)]="selection" bindLabel="name" bindValue="_id"
+              placeholder="Select brands" formControlName="Age" (change)="brandValue(selection)">
               <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
-                  <div *ngIf="item.name === 'Kaunas'">{{item.name}}</div>
-                  <div style="margin: 10px 0;" class="card" *ngIf="item.name !== 'Kaunas'">
-                      <div class="card-body">
-                          <h5 class="card-title" [ngOptionHighlight]="search">{{item.name}}</h5>
-                          <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                          <p class="card-text">
-                              <img height="15" width="15" src = "../../../../assets/images/cuisines/Indian.jpg"/>
-                              Some quick example text to build
-                          </p>
-                          <div *ngIf="item.name === 'Pavilnys'">
-                              <a href="#" class="card-link">Card link</a>
-                              <a href="#" class="card-link">Another link</a>
-                          </div>
-                      </div>
+                <div *ngIf="item.name === 'Kaunas'">{{item.name}}</div>
+                <div style="margin: 10px 0;" class="card" *ngIf="item.name !== 'Kaunas'">
+                  <div class="card-body">
+                    <h5 class="card-title" [ngOptionHighlight]="search">{{item.name}}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                    <p class="card-text">
+                      <img height="15" width="15" src="../../../../assets/images/cuisines/Indian.jpg" />
+                      Some quick example text to build
+                    </p>
+                    <div *ngIf="item.name === 'Pavilnys'">
+                      <a href="#" class="card-link">Card link</a>
+                      <a href="#" class="card-link">Another link</a>
+                    </div>
                   </div>
+                </div>
               </ng-template>
-          </ng-select>
+            </ng-select>
           </div>
           <button class="btn btn btn-light me-2" type="button" (click)="modalRef.hide(brandModal)"
             (click)="openCuisineModal(cuisineModal)">Back</button>
@@ -170,13 +203,15 @@
       <div class="col-md-12 col-md-offset-3">
         <form [formGroup]="formGroup">
           <div class="form-check" *ngFor="let option of options">
-            <label class="form-check-label">
-              <input class="form-check-input" type="checkbox" (change)="testProducts($event, option)">
-              {{option.name}}<br><span>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form</span>
+            <label class="form-check-label  checkbox-box">
+              <input class="form-check-input product-checkbox" type="checkbox" (change)="testProducts($event, option)">
+              <div class="product-text">
+                <span class="checkbox-label">{{option.name}}</span><br>
+                <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered
+                  alteration in some form</p>
+              </div>
+              <img class="mt-1" height="15" width="15" src="../../../../assets/images/cuisines/Indian.jpg" />
               <br>
-              <span class="form-check-sign">
-                <span class="check"></span>
-              </span>
             </label><br><br>
           </div>
           <button class="btn btn btn-light me-2" type="button" (click)="modalRef.hide(productsModal)"
@@ -243,7 +278,7 @@
         <h6>Brandname: {{options.brand.name}}</h6>
         <h6>Products:</h6>
         <div *ngFor="let option of options.product">
-            <span> {{option.name}}</span>
+          <span> {{option.name}}</span>
         </div>
       </div>
     </div>
@@ -266,18 +301,21 @@
       <div class="col-md-12 col-md-offset-3">
         <form [formGroup]="formGroup">
           <div class="form-check" *ngFor="let option of options">
-            <label class="form-check-label">
-              <input class="form-check-input" type="checkbox" (change)="testProducts($event, option)" [checked]="option.isChecked">
-              {{option.name}}
-              <span class="form-check-sign">
-                <span class="check"></span>
-              </span>
+            <label class="form-check-label checkbox-box">
+              <input class="form-check-input product-checkbox" type="checkbox" (change)="testProducts($event, option)" [checked]="option.isChecked">
+              <div class="product-text">
+                <span class="checkbox-label"> {{option.name}}</span>
+                <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered
+                  alteration in some form</p>
+              </div>
+              <img class="mt-1" height="15" width="15" src="../../../../assets/images/cuisines/Indian.jpg" />
             </label><br><br>
+
           </div>
           <button class="btn btn btn-light me-2" type="button" (click)="modalRef.hide(productsModal)"
             (click)="openBrandModal(brandModal)">Back</button>
           <button class="btn btn-primary" type="submit" (click)="modalRef.hide(productsModal)"
-            (click)="createBrand()">Submit</button>
+            (click)="updateBrand()">Submit</button>
         </form>
       </div>
     </div>
