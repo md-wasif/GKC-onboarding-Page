@@ -57,7 +57,6 @@ export class BrandManagementComponent implements OnInit {
     openCuisineModal(cuisineModal) {
       this.api_service.getCuisines().subscribe(res => {
         if(res.code == "OK") {
-          console.log(res.data.cuisines)
           this.options = res.data.cuisines
           if ("cuisine" in localStorage) {
             let selectedCuisine = JSON.parse(localStorage.getItem("cuisine")) 
@@ -116,10 +115,13 @@ export class BrandManagementComponent implements OnInit {
         brandId: brandId,
         productsId: this.products
       }
-      console.log(this.products)
       this.api_service.createBrand(body).subscribe(res => {
         if (res) {
-          window.location.reload();
+          if(res.message) {
+            console.log(res.message)
+          }
+          this.products=[];
+          // window.location.reload();
           // localStorage.clear();
         }
       })
@@ -187,12 +189,10 @@ export class BrandManagementComponent implements OnInit {
 
 
     toggleUser(event:any, brand:any){
-      console.log(event, brand)
         let body = {
             isActive: event.checked
           }
         this.api_service.toggleBrand(body, brand).subscribe(res=>{
-            console.log(res)
           })
 }
 
@@ -203,7 +203,6 @@ export class BrandManagementComponent implements OnInit {
         productsId: this.products
       }
       this.api_service.editBrand(body, this.userBrandId).subscribe(res => {
-        console.log(res)
         if (res) {
           window.location.reload();
         }

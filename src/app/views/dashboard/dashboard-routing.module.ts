@@ -4,6 +4,7 @@ import { BrandManagementComponent } from './brand-management/brand-management.co
 
 import { HomeComponent } from './home/home.component';
 import { UserManagementComponent } from './user-management/user-management.component';
+import { PromotionsComponent } from './promotions/promotions.component';
 
 const routes: Routes = [
     {
@@ -17,6 +18,10 @@ const routes: Routes = [
     {
         path: 'brandmanagement',
         component: BrandManagementComponent 
+    },
+    {
+        path: 'promotions',
+        component: PromotionsComponent 
     },
 ];
 

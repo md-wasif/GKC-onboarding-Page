@@ -31,6 +31,16 @@ const dashboard: NavMenu[] = [
         key: 'brand_management',
         submenu: []
     },
+    {
+        path: '/dashboard/promotions',
+        title: 'Promotions',
+        translateKey: 'NAV.PROMOTIONS',
+        type: 'item',
+        iconType: 'feather',
+        icon: 'icon-home',
+        key: 'promotions',
+        submenu: []
+    },
 ]
 
 export const navConfiguration: NavMenu[] = [

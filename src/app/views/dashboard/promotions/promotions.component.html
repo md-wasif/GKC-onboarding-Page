@@ -1,0 +1,88 @@
+<div class="container-fluid p-0" style="width: 98%;">
+  <div class="card">
+    <div class="card-body">
+      <div class="mb-3 d-flex align-items-center justify-content-between">
+        <h4 class="mb-2 fw-bolder">Current promotions</h4>
+      </div>
+      <div class="table-responsive">
+        <ngx-datatable #table [rows]="users" [columnMode]="columnMode" [headerHeight]="50" [footerHeight]="50"
+          [limit]="10" [selected]="selected" [selectionType]="SelectionType.checkbox" (activate)="onActivate($event)"
+          (select)="onSelect($event)" [rowHeight]="rowHeight" [scrollbarH]="scrollbarH">
+          <ngx-datatable-column name="Condition" [width]="100" [sortable]="false">
+            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+              <div class="d-flex align-items-center">
+                <avatar [size]="38" [src]="row['img']"></avatar>
+                <div class="ms-2">
+                  <div class="text-dark fw-bold">New customers</div>
+                </div>
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="Offer" [width]="40" [sortable]="false">
+            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+              <div class="d-flex align-items-center">
+                <avatar [size]="38" [src]="row['img']"></avatar>
+                <div class="ms-2">
+                  <div class="text-dark fw-bold">$3 off</div>
+                </div>
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="Goal type" [width]="40" [sortable]="false">
+            <ng-template let-row="row" class="" let-value="value" ngx-datatable-cell-template>
+              <div>
+                <div class="brandsLength fw-bold">Gain</div>
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="View" [sortable]="false" [width]="10">
+            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+              <div class="d-flex align-items-center"
+                [ngClass]="row['status'] === 'active'? 'text-success': 'text-danger'">
+                <span class="text-capitalize">
+                  <button type="button" class="btn btn-primary" (click)="viewUserModal(row, viewtemplate)">
+                    Details
+                  </button>
+                </span>
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="Start date" [sortable]="false" [width]="50">
+            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                <div class="d-flex align-items-center" (click)="deleteUser(row)">
+                  11
+                </div>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="End date" [sortable]="false" [width]="30">
+            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                <div class="d-flex align-items-center" (click)="deleteUser(row)">
+                  -
+                </div>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="Activate" [sortable]="false" cellClass="allow-overflow" [width]="30">
+            <ng-template let-row="row" let-value="row['isActive']" ngx-datatable-cell-template>
+              <switch name="basicSwitch" [(ngModel)]="row.isActive" [checked]="row.isActive" (onChange)="toggleUser($event, row)"></switch>
+            </ng-template>
+          </ngx-datatable-column>
+        </ngx-datatable>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<ng-template #viewtemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Promotion name</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <h6></h6>
+    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
+  <button type="button" class="btn btn-primary mt-3" (click)="modalRef.hide()">Close</button>
+  </div>
+</ng-template>

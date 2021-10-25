@@ -26,7 +26,7 @@ interface Users {
 @Injectable({
     providedIn: 'root'
 })
-export class UserManagementService {
+export class PromotionsService {
     getUsersApiUrl = `http://localhost:5000/getUsers`;
  
     constructor(private http: HttpClient) {}

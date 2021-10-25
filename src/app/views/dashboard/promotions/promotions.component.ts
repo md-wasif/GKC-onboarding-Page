@@ -1,7 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef, ViewChild, HostListener, TemplateRef } from '@angular/core';
-import { ColumnMode, SelectionType } from '@swimlane/ngx-datatable';
-import { DatatableComponent } from '@swimlane/ngx-datatable';
-import { UserManagementService } from './user-management.service'
+import { ColumnMode, SelectionType, DatatableComponent } from '@swimlane/ngx-datatable';
+import { PromotionsService } from './promotions.service'
 import { ScreenSizeService } from '@app/shared/services/screen-size.service';
 import { delay } from 'rxjs/operators';
 import { SCREEN_SIZE } from '@app/shared/types/screen-size.enum';
@@ -12,14 +11,15 @@ import { Router } from '@angular/router';
 
 
 @Component({
-    selector: 'user-management',
-    templateUrl: './user-management.component.html',
+    selector: 'promotions',
+    templateUrl: './promotions.component.html',
+    styleUrls: ['./promotions.component.scss'],
     providers: [
-        UserManagementService,
+        PromotionsService,
         ScreenSizeService
     ],
 })
-export class UserManagementComponent implements OnInit {
+export class PromotionsComponent implements OnInit {
     formGroup = this.formBuilder.group({
                 firstname: [null, [Validators.required]],
                 lastname: [null, [Validators.required]],
@@ -45,7 +45,7 @@ export class UserManagementComponent implements OnInit {
 
     
     @ViewChild(DatatableComponent) table: DatatableComponent;
-    constructor(private userManagementService: UserManagementService, private cdr: ChangeDetectorRef, private screenSizeSvc: ScreenSizeService, private modalService: BsModalService, private formBuilder: FormBuilder, private api_service: ApiService, private router: Router) {  
+    constructor(private promotionsService: PromotionsService, private cdr: ChangeDetectorRef, private screenSizeSvc: ScreenSizeService, private modalService: BsModalService, private formBuilder: FormBuilder, private api_service: ApiService, private router: Router) {  
         this.screenSizeSvc.onResize$.pipe(delay(0)).subscribe(sizes => {
             const sizeTabletAbove = sizes.includes(SCREEN_SIZE.XXL) ||  sizes.includes(SCREEN_SIZE.XL) || sizes.includes(SCREEN_SIZE.LG)
             if(sizeTabletAbove){
@@ -68,7 +68,7 @@ export class UserManagementComponent implements OnInit {
 
     //get users data on load
     getUsers() {
-        this.userManagementService.getUsers().subscribe(data => {
+        this.promotionsService.getUsers().subscribe(data => {
             this.getAllUsersResponse.push(data)
             if (this.getAllUsersResponse[0].code == "OK") {
                 this.users = this.getAllUsersResponse[0].data.users
@@ -88,7 +88,7 @@ export class UserManagementComponent implements OnInit {
       email: this.formGroup.value.email,
       password: this.formGroup.value.password
     }
-    this.userManagementService.createUser(body).subscribe(res => {
+    this.promotionsService.createUser(body).subscribe(res => {
       if (res) {
         this.modalService.hide(createusertemplate);
         window.location.reload();
@@ -99,7 +99,7 @@ export class UserManagementComponent implements OnInit {
 
     // view user API
     viewUserModal(row, viewUserModal) {
-        this.userManagementService.viewUser(row._id).subscribe(res => {
+        this.promotionsService.viewUser(row._id).subscribe(res => {
             this.getUserResponse.push(res)
             if(this.getUserResponse[0].code == "OK") {
                 this.viewUserDetails = this.getUserResponse[0].data.getuserDetails
@@ -113,7 +113,7 @@ export class UserManagementComponent implements OnInit {
     // open update user modal
     updateUserModal(row, updatetemplate) {
         this.user = row;
-        this.userManagementService.viewUser(row._id).subscribe(res => {
+        this.promotionsService.viewUser(row._id).subscribe(res => {
             this.viewUserDetails = res[0]
             console.log(this.viewUserDetails)
             })
@@ -128,7 +128,7 @@ export class UserManagementComponent implements OnInit {
             lastName: user.lastName,
             email: user.email,
           }
-          this.userManagementService.updateUserDetails(body, user._id).subscribe(res => {
+          this.promotionsService.updateUserDetails(body, user._id).subscribe(res => {
               if(res) {
                 this.modalService.hide(updatetemplate);
                 window.location.reload();
@@ -138,7 +138,7 @@ export class UserManagementComponent implements OnInit {
 
     // delete user
     deleteUser(user) {
-        this.userManagementService.deleteUser(user).subscribe(res=>{
+        this.promotionsService.deleteUser(user).subscribe(res=>{
           if(res) {
             let array = this.allUsers.indexOf(user, 0)
                   this.allUsers.splice(array, 1)
@@ -152,7 +152,7 @@ export class UserManagementComponent implements OnInit {
             let body = {
                 isActive: event.checked
               }
-            this.userManagementService.toggleUser(body, user).subscribe(res=>{
+            this.promotionsService.toggleUser(body, user).subscribe(res=>{
               })
     }
 
